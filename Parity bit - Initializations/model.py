@@ -37,7 +37,7 @@ def create_dense_model(input_size):
         layer_size = int((input_size+1)/2)
 
 
-    model.add(Dense(layer_size, activation="relu", kernel_initializer=initializers.TruncatedNormal(mean=0.0, stddev=0.05, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    model.add(Dense(layer_size, activation="softsign ", kernel_initializer=initializers.RandomNormal(mean=0.0, stddev=0.05, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_crossentropy', 'accuracy'])
@@ -46,7 +46,7 @@ def create_dense_model(input_size):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 500
+    epochs = 250
     b_size = 100
 
     avg_val = np.array([])
