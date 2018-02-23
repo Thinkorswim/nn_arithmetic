@@ -41,7 +41,7 @@ def create_dense_model(input_size):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 1000
+    epochs = 500
     b_size = 100
 
     avg_val = np.array([])
