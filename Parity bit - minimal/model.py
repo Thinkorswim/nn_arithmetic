@@ -30,9 +30,9 @@ def create_dense_model(input_size):
     model = Sequential()
 
     if input_size % 2 == 0:
-        model.add(Dense(int(input_size/2 + 1), activation="relu", input_shape=(input_size,)))
+        model.add(Dense(int(input_size/2 + 1), activation="sigmoid", input_shape=(input_size,)))
     else:
-        model.add(Dense(int((input_size+1)/2), activation="relu", input_shape=(input_size,)))
+        model.add(Dense(int((input_size+1)/2), activation="sigmoid", input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_crossentropy', 'accuracy'])
@@ -41,7 +41,7 @@ def create_dense_model(input_size):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 100
+    epochs = 1000
     b_size = 100
 
     avg_val = np.array([])
