@@ -37,7 +37,7 @@ def create_dense_model(input_size):
         layer_size = int((input_size+1)/2)
 
 
-    model.add(Dense(layer_size, activation="softsign", kernel_initializer=initializers.glorot_uniform(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.he_normal(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_crossentropy', 'accuracy'])
@@ -69,14 +69,13 @@ if __name__ == '__main__':
         classifier = create_dense_model(len(X_train[0]))
         #classifier.summary()
 
-        history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=1)
+        history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=0)
         result = classifier.evaluate(X_test, Y_test, batch_size=b_size)
 
         avg_val = np.append(avg_val, result[2])
         avg_train = np.append(avg_train, history.history['acc'][-1])
 
 
-    print("\nhe_uniform(seed=None)")
 
     print("\nValidation Avg: " + str(np.average(avg_val)))
     print("Train Avg: " + str(np.average(avg_train)))

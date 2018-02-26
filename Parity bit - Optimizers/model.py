@@ -27,7 +27,7 @@ def import_data(dataset="data"):
 
     return X,Y
 
-def create_dense_model(input_size):
+def create_dense_model(input_size, optimizer):
     model = Sequential()
     layer_size = 0
 
@@ -37,21 +37,23 @@ def create_dense_model(input_size):
         layer_size = int((input_size+1)/2)
 
 
-    model.add(Dense(layer_size, activation="relu", kernel_initializer=initializers.glorot_uniform(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    model.add(Dense(layer_size, activation="softsign", kernel_initializer=initializers.glorot_uniform(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_crossentropy', 'accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['binary_crossentropy', 'accuracy'])
     return model
 
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 500
+    epochs = 100
     b_size = 100
+
+    optimizers = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004)]
 
     avg_val = np.array([])
     avg_train = np.array([])
-    loop = 10
+    loop = 5
 
     X, Y = import_data()
 
@@ -65,20 +67,23 @@ if __name__ == '__main__':
     print("\nTraining examples: " +  str(X_train.shape[0]))
     print("Test examples: " +  str(X_test.shape[0]))
 
-    for i in range(loop):
-        classifier = create_dense_model(len(X_train[0]))
-        #classifier.summary()
+    for opt in optimizers:
+        for i in range(loop):
+            classifier = create_dense_model(len(X_train[0]), opt)
+            #classifier.summary()
 
-        history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=1)
-        result = classifier.evaluate(X_test, Y_test, batch_size=b_size)
+            history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=0)
+            result = classifier.evaluate(X_test, Y_test, batch_size=b_size)
 
-        avg_val = np.append(avg_val, result[2])
-        avg_train = np.append(avg_train, history.history['acc'][-1])
+            avg_val = np.append(avg_val, result[2])
+            avg_train = np.append(avg_train, history.history['acc'][-1])
 
 
-    print("\nValidation Avg: " + str(np.average(avg_val)))
-    print("Train Avg: " + str(np.average(avg_train)))
+        print("\n\n\n")
 
-    print("\n")
-    print(avg_val)
-    print(avg_train)
+        print("\nValidation Avg: " + str(np.average(avg_val)))
+        print("Train Avg: " + str(np.average(avg_train)))
+
+        print("\n")
+        print(avg_val)
+        print(avg_train)
