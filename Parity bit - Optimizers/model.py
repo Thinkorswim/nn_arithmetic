@@ -80,7 +80,6 @@ if __name__ == '__main__':
 
 
         print("\n----------------------\n")
-        print(str(opt))
 
         print("\nValidation Avg: " + str(np.average(avg_val)))
         print("Train Avg: " + str(np.average(avg_train)))
