@@ -4,6 +4,8 @@ from keras.layers.core import Dense, Dropout
 from keras.layers import Input
 from keras import regularizers
 from keras import initializers
+from keras import optimizers
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,8 +14,6 @@ from sklearn.model_selection import train_test_split, cross_val_score
 
 
 from IPython import embed
-
-
 
 def import_data(dataset="data"):
     X = []
@@ -46,14 +46,14 @@ def create_dense_model(input_size, optimizer):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 100
+    epochs = 1
     b_size = 100
 
-    optimizers = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004)]
+    optims = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004)]
 
     avg_val = np.array([])
     avg_train = np.array([])
-    loop = 5
+    loop = 1
 
     X, Y = import_data()
 
@@ -67,9 +67,9 @@ if __name__ == '__main__':
     print("\nTraining examples: " +  str(X_train.shape[0]))
     print("Test examples: " +  str(X_test.shape[0]))
 
-    for opt in optimizers:
+    for opt in optims:
         for i in range(loop):
-            classifier = create_dense_model(len(X_train[0]), opt)
+            classifier = create_dense_model(len(X_train[0]), optims)
             #classifier.summary()
 
             history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=0)
@@ -79,7 +79,8 @@ if __name__ == '__main__':
             avg_train = np.append(avg_train, history.history['acc'][-1])
 
 
-        print("\n\n\n")
+        print("\n----------------------\n")
+        print(str(opt))
 
         print("\nValidation Avg: " + str(np.average(avg_val)))
         print("Train Avg: " + str(np.average(avg_train)))
@@ -87,3 +88,6 @@ if __name__ == '__main__':
         print("\n")
         print(avg_val)
         print(avg_train)
+
+        avg_val = np.array([])
+        avg_train = np.array([])
