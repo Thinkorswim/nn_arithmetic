@@ -37,7 +37,7 @@ def create_dense_model(input_size):
         layer_size = int((input_size+1)/2)
 
 
-    model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.he_normal(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_crossentropy', 'accuracy'])
@@ -46,12 +46,12 @@ def create_dense_model(input_size):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 250
+    epochs = 500
     b_size = 100
 
     avg_val = np.array([])
     avg_train = np.array([])
-    loop = 10
+    loop = 1
 
     X, Y = import_data()
 
@@ -77,9 +77,11 @@ if __name__ == '__main__':
 
 
 
-    print("\nValidation Avg: " + str(np.average(avg_val)))
-    print("Train Avg: " + str(np.average(avg_train)))
+        print("\nValidation Avg: " + str(np.average(avg_val)))
+        print("Train Avg: " + str(np.average(avg_train)))
 
-    print("\n")
-    print(avg_val)
-    print(avg_train)
+        print("\n")
+        print(avg_val)
+        print(avg_train)
+
+    embed()

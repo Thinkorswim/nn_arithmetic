@@ -37,7 +37,7 @@ def create_dense_model(input_size, optimizer):
         layer_size = int((input_size+1)/2)
 
 
-    model.add(Dense(layer_size, activation="softsign", kernel_initializer=initializers.glorot_uniform(seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
 
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['binary_crossentropy', 'accuracy'])
@@ -46,10 +46,10 @@ def create_dense_model(input_size, optimizer):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 100
+    epochs = 250
     b_size = 100
 
-    optims = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004)]
+    optims = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004), keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)]
 
     avg_val = np.array([])
     avg_train = np.array([])
