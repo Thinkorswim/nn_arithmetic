@@ -31,13 +31,18 @@ def create_dense_model(input_size):
     model = Sequential()
     layer_size = 0
 
-    # if input_size % 2 == 0:
-    #     layer_size = int(input_size/2 + 1)
-    # else:
-    #     layer_size = int((input_size+1)/2)
+    #if input_size % 2 == 0:
+    #    layer_size = int(input_size/2 + 1)
+    #else:
+    #    layer_size = int((input_size+1)/2)
     layer_size = 2*input_size
 
+    
     model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
+    # model.add(Dropout(0.2))
+    # model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros()))
+    # model.add(Dropout(0.2))
+    # model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros()))
     model.add(Dense(1,activation="sigmoid"))
     model.compile(loss='binary_crossentropy', optimizer=optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), metrics=['binary_crossentropy', 'accuracy'])
     return model
@@ -46,7 +51,7 @@ def create_dense_model(input_size):
 if __name__ == '__main__':
     test_size = 0.2
     epochs = 10000
-    b_size = 10
+    b_size = 100
 
     # optims = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004), keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)]
 
