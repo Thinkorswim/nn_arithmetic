@@ -35,9 +35,9 @@ def create_dense_model(input_size):
     #    layer_size = int(input_size/2 + 1)
     #else:
     #    layer_size = int((input_size+1)/2)
-    layer_size = 2*input_size
+    layer_size = input_size
 
-    
+
     model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
     # model.add(Dropout(0.2))
     # model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros()))
@@ -50,8 +50,8 @@ def create_dense_model(input_size):
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 10000
-    b_size = 100
+    epochs = 100
+    b_size = 10
 
     # optims = [optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0), optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0), optimizers.Adadelta(lr=1.0, rho=0.95, epsilon=None, decay=0.0), optimizers.Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0), optimizers.Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=None, schedule_decay=0.004), keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)]
 
@@ -76,24 +76,24 @@ if __name__ == '__main__':
         classifier = create_dense_model(len(X_train[0]))
         classifier.summary()
 
-        history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=1)
+        history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=0)
         result = classifier.evaluate(X_test, Y_test, batch_size=b_size)
 
         avg_val = np.append(avg_val, result[2])
         avg_train = np.append(avg_train, history.history['acc'][-1])
 
 
-        print("\n----------------------\n")
-        # print(str(opt))
+    print("\n----------------------\n")
 
-        print("\nValidation Avg: " + str(np.average(avg_val)))
-        print("Train Avg: " + str(np.average(avg_train)))
 
-        print("\n")
-        print(avg_val)
-        print(avg_train)
+    print("\nValidation Avg: " + str(np.average(avg_val)))
+    print("Train Avg: " + str(np.average(avg_train)))
 
-        avg_val = np.array([])
-        avg_train = np.array([])
+    print("\n")
+    print(avg_val)
+    print(avg_train)
 
-        embed()
+    avg_val = np.array([])
+    avg_train = np.array([])
+
+    # embed()

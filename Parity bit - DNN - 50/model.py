@@ -37,7 +37,7 @@ def create_dense_model(input_size):
     #    layer_size = int((input_size+1)/2)
     layer_size = 2*input_size
 
-    
+
     model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros(), input_shape=(input_size,)))
     # model.add(Dropout(0.2))
     # model.add(Dense(layer_size, activation="selu", kernel_initializer=initializers.Orthogonal(gain=1.0, seed=0), bias_initializer=initializers.zeros()))
@@ -83,17 +83,17 @@ if __name__ == '__main__':
         avg_train = np.append(avg_train, history.history['acc'][-1])
 
 
-        print("\n----------------------\n")
-        # print(str(opt))
+    print("\n----------------------\n")
+    # print(str(opt))
 
-        print("\nValidation Avg: " + str(np.average(avg_val)))
-        print("Train Avg: " + str(np.average(avg_train)))
+    print("\nValidation Avg: " + str(np.average(avg_val)))
+    print("Train Avg: " + str(np.average(avg_train)))
 
-        print("\n")
-        print(avg_val)
-        print(avg_train)
+    print("\n")
+    print(avg_val)
+    print(avg_train)
 
-        avg_val = np.array([])
-        avg_train = np.array([])
+    avg_val = np.array([])
+    avg_train = np.array([])
 
-        embed()
+    embed()

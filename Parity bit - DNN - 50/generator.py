@@ -26,6 +26,7 @@ def generator(sizeSample, bitLength, repetition):
                 generated.append(bitString)
                 i += 1
         else:
+            generated.append(bitString)
             i += 1
 
     return generated
