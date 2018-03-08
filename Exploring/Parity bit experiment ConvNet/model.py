@@ -31,17 +31,17 @@ def import_data(dataset="data"):
 
 def create_convolutional_model(seq_length):
     model = Sequential()
-    model.add(Conv1D(50, 3, activation='relu', kernel_initializer="glorot_uniform", input_shape=(seq_length[1], 1 )))
+    model.add(Conv1D(50, 10, activation='relu', kernel_initializer="glorot_uniform", input_shape=(seq_length[1], 1 )))
     # model.add(Conv1D(64, 1, activation='relu'))
-    model.add(MaxPooling1D(1))
+    model.add(MaxPooling1D(2))
     # # model.add(Conv1D(64, 1, activation='relu'))
-    model.add(Conv1D(50, 3, activation='relu', kernel_initializer="glorot_uniform"))
+    model.add(Conv1D(50, 5, activation='relu', kernel_initializer="glorot_uniform"))
     model.add(GlobalAveragePooling1D())
     # model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
 
     model.compile(loss='binary_crossentropy',
-                  optimizer='rmsprop',
+                  optimizer='adam',
                   metrics=['accuracy'])
 
     return model

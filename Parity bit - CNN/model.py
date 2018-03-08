@@ -32,37 +32,43 @@ def import_data(dataset="data"):
 
 def create_CNN_model(input_size, f, k):
     model = Sequential()
-    model.add(Conv1D(f, k, activation='relu', kernel_initializer="glorot_uniform", input_shape=(input_size, 1)))
-    # model.add(Conv1D(64, 1, activation='relu'))
+    model.add(Conv1D(f, k, activation='relu', kernel_initializer="glorot_uniform", input_shape=(input_size, 1 )))
+    model.add(MaxPooling1D(1))
+    model.add(Dropout(0.5))
+    model.add(Conv1D(f, 1, activation='relu', kernel_initializer="glorot_uniform"))
+    model.add(MaxPooling1D(1))
+    model.add(Dropout(0.5))
+    model.add(Conv1D(f, 1, activation='relu', kernel_initializer="glorot_uniform"))
+    model.add(Dropout(0.5))
     model.add(GlobalAveragePooling1D())
     # model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
 
     model.compile(loss='binary_crossentropy',
-                  optimizer="adam",
-                  metrics=['binary_crossentropy','accuracy'])
+                  optimizer='adam',
+                  metrics=['binary_crossentropy', 'accuracy'])
 
     return model
 
 
 if __name__ == '__main__':
     test_size = 0.2
-    epochs = 500
-    b_size = 10
+    epochs = 1000
+    b_size = 100
 
 
     avg_val = np.array([])
     avg_train = np.array([])
-    loop = 3
+    loop = 1
 
     X, Y = import_data()
 
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, random_state=0)
-    input_size = X_train[0]
+    input_size = len(X_train[0])
 
 
-    filters = [int(input_size/2+1), input_size, input_size*2]
-    kernels = [2, int(input_size/3), int(input_size/2), input_size]
+    filters = [input_size*2]
+    kernels = [input_size]
 
 
 
@@ -72,10 +78,10 @@ if __name__ == '__main__':
     for f in filters:
         for k in kernels:
             for i in range(loop):
-                classifier = create_CNN_model(len(X_train[0]))
+                classifier = create_CNN_model(len(X_train[0]), f, k)
                 classifier.summary()
 
-                history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=0)
+                history = classifier.fit(X_train, Y_train, epochs=epochs, batch_size=b_size, verbose=1)
                 result = classifier.evaluate(X_test, Y_test, batch_size=b_size)
 
                 avg_val = np.append(avg_val, result[2])
