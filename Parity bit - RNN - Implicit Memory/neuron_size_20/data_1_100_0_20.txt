@@ -1,0 +1,4 @@
+
+Validation Avg: 0.939500002265
+Train Avg: 0.949775002301
+

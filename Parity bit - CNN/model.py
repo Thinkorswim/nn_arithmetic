@@ -33,7 +33,7 @@ def import_data(dataset="data"):
 def create_CNN_model(input_size, f, k):
     model = Sequential()
     model.add(Conv1D(f, k, activation='relu', kernel_initializer="glorot_uniform", input_shape=(input_size, 1 )))
-    model.add(MaxPooling1D(1))
+        model.add(MaxPooling1D(1))
     model.add(Dropout(0.5))
     model.add(Conv1D(f, 1, activation='relu', kernel_initializer="glorot_uniform"))
     model.add(MaxPooling1D(1))

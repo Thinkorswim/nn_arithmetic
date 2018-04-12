@@ -37,5 +37,5 @@ def output_data(data):
             print(d, file=f1)
 
 if __name__ == '__main__':
-    generated = generator(100000, 50, False)
+    generated = generator(1024, 10, False)
     output_data(generated)
