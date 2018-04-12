@@ -6,6 +6,8 @@ from keras import regularizers
 from sklearn.metrics import confusion_matrix
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -111,7 +113,7 @@ if __name__ == '__main__':
             ax.grid('on')
             fig.tight_layout()
             fig.savefig(exp + '/graph_' + str(len(X_train[0])) + '_' + str(ep) + '_' + str(t) + '.pdf')
-            plt.show()
+            # plt.show()
 
 
 
